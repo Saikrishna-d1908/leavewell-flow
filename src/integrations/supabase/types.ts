@@ -14,16 +14,204 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      holidays: {
+        Row: {
+          created_at: string
+          date: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      leave_policies: {
+        Row: {
+          annual_quota: number
+          created_at: string
+          id: string
+          leave_type: Database["public"]["Enums"]["leave_type"]
+          max_consecutive_days: number | null
+          requires_approval: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          annual_quota?: number
+          created_at?: string
+          id?: string
+          leave_type: Database["public"]["Enums"]["leave_type"]
+          max_consecutive_days?: number | null
+          requires_approval?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          annual_quota?: number
+          created_at?: string
+          id?: string
+          leave_type?: Database["public"]["Enums"]["leave_type"]
+          max_consecutive_days?: number | null
+          requires_approval?: boolean | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      leave_requests: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          custom_reason: string | null
+          description: string | null
+          employee_id: string
+          end_date: string
+          id: string
+          leave_type: Database["public"]["Enums"]["leave_type"]
+          rejection_reason: string | null
+          start_date: string
+          status: Database["public"]["Enums"]["leave_status"]
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          custom_reason?: string | null
+          description?: string | null
+          employee_id: string
+          end_date: string
+          id?: string
+          leave_type: Database["public"]["Enums"]["leave_type"]
+          rejection_reason?: string | null
+          start_date: string
+          status?: Database["public"]["Enums"]["leave_status"]
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          custom_reason?: string | null
+          description?: string | null
+          employee_id?: string
+          end_date?: string
+          id?: string
+          leave_type?: Database["public"]["Enums"]["leave_type"]
+          rejection_reason?: string | null
+          start_date?: string
+          status?: Database["public"]["Enums"]["leave_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leave_requests_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leave_requests_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          department: string | null
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          manager_id: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          manager_id?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          manager_id?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: {
+        Args: { user_id: string }
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
     }
     Enums: {
-      [_ in never]: never
+      leave_status: "pending" | "approved" | "rejected" | "cancelled"
+      leave_type:
+        | "sick"
+        | "vacation"
+        | "family_emergency"
+        | "personal"
+        | "other"
+      user_role: "employee" | "manager" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +338,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      leave_status: ["pending", "approved", "rejected", "cancelled"],
+      leave_type: ["sick", "vacation", "family_emergency", "personal", "other"],
+      user_role: ["employee", "manager", "admin"],
+    },
   },
 } as const
