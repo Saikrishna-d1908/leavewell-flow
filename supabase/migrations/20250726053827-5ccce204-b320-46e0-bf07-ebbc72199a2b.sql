@@ -99,6 +99,7 @@ BEGIN
     COALESCE((NEW.raw_user_meta_data ->> 'role')::user_role, 'employee')
   );
   
+  -- Insert into user_roles table for compatibility
   INSERT INTO public.user_roles (user_id, role)
   VALUES (
     NEW.id,
@@ -106,6 +107,11 @@ BEGIN
   );
   
   RETURN NEW;
+EXCEPTION
+  WHEN OTHERS THEN
+    -- Log error and still return NEW to not break the auth flow
+    RAISE WARNING 'Error in handle_new_user: %', SQLERRM;
+    RETURN NEW;
 END;
 $$;
 

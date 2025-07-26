@@ -129,6 +129,16 @@ export default function Auth() {
             <h1 className="text-3xl font-bold text-foreground">LeaveFlow</h1>
           </div>
           <p className="text-muted-foreground">Modern Leave Management System</p>
+          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+            <p className="text-sm text-blue-700 dark:text-blue-300">
+              🚀 <strong>Demo Mode Active:</strong> Try these credentials or create a new account!
+            </p>
+            <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 space-y-1">
+              <div>👤 <strong>Employee:</strong> employee@demo.com / demo123</div>
+              <div>👨‍💼 <strong>Manager:</strong> manager@demo.com / demo123</div>
+              <div>⚙️ <strong>Admin:</strong> admin@demo.com / demo123</div>
+            </div>
+          </div>
         </div>
 
         <Card className="animate-fade-in">
